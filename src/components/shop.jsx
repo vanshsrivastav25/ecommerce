@@ -1,6 +1,7 @@
 import React from "react";
 import Layout from "./common/Layout";
 import eight from "../assets/images/eight.jpg";
+import { Link } from "react-router-dom";
 
 const shop = () => {
   return (
@@ -87,7 +88,7 @@ const shop = () => {
                   </div>
 
                   <div className="card-body pt-3">
-                    <a href="">Red Check Shirt for Mens</a>
+                    <Link to="/product">Red Check Shirt for Mens</Link>
                     <div className="price">
                       $50{" "}
                       <span className="text-decoration-linr-through">$80</span>
