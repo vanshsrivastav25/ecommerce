@@ -35,6 +35,7 @@ h4 {
 a {
   text-decoration: none;
   color: $primary-black;
+
   &::hover {
     color: $primary-color;
   }
@@ -50,6 +51,7 @@ a {
 
 ul {
   padding-left: 0;
+
   li {
     list-style: none;
   }
@@ -64,18 +66,22 @@ ul {
     background-color: rgba($primary-black, 0.03);
     border-color: rgba($primary-black, 0.05);
     padding: 7px 15px;
+
     &.active {
       border-color: rgba($primary-black, 0.2);
     }
+
     &:hover {
       border-color: rgba($primary-black, 0.2);
       color: $primary-black;
     }
   }
+
   &.btn-primary {
     background-color: $primary-color;
     border-color: $primary-color;
     padding: 7px 25px;
+
     &:hover {
       background-color: $primary-black;
       border-color: $primary-black;
@@ -88,6 +94,7 @@ ul {
     border-color: $primary-black;
     color: $primary-white;
     padding: 7px 25px;
+
     &:hover {
       background-color: $primary-color;
       border-color: $primary-color;
@@ -109,23 +116,27 @@ header {
   }
 }
 
-footer{
+footer {
   background-color: $tertiary-color;
-  h2{
+
+  h2 {
     font-size: 1.5em;
   }
-  ul{
-    li{
+
+  ul {
+    li {
       margin-bottom: 10px;
-      a{
+
+      a {
         font-size: 1.2em;
         color: $primary-white;
       }
     }
   }
-  .spotlight{
-    border-top: 1px solid rgba($primary-white, 0.10);
-    border-bottom: 1px solid rgba($primary-white, 0.10);
+
+  .spotlight {
+    border-top: 1px solid rgba($primary-white, 0.1);
+    border-bottom: 1px solid rgba($primary-white, 0.1);
   }
 }
 
@@ -133,6 +144,7 @@ footer{
   .swiper-wrapper {
     .swiper-slide {
       height: 750px;
+
       .content {
         width: 100%;
         height: 100%;
@@ -172,6 +184,7 @@ footer{
   .card-img {
     overflow: hidden;
     border-radius: 10px;
+
     img {
       width: 100%;
       height: auto;
@@ -180,21 +193,131 @@ footer{
       transition: all 0.3s ease-in-out;
     }
   }
+
   &:hover {
     img {
       scale: 1.2;
     }
   }
+
   .card-body {
     padding: 0;
+
     a {
       font-size: 1.2em;
+      &:hover {
+          color: $primary-color;
+        }
     }
+
     .price {
       font-size: 1.2em;
+      padding-bottom: 20px;
+
       span {
         color: rgba($primary-black, 0.5);
       }
     }
+  }
+}
+
+/* ---------------------------------------------------------
+   RESPONSIVE IMPROVEMENTS (Only Additions)
+---------------------------------------------------------- */
+
+/* Typography */
+@media (max-width: 992px) {
+  h1 {
+    font-size: 2em;
+  }
+  h2 {
+    font-size: 1.7em;
+  }
+  h3 {
+    font-size: 1.2em;
+  }
+  h4 {
+    font-size: 0.9em;
+  }
+}
+
+@media (max-width: 768px) {
+  body {
+    font-size: 0.9em;
+  }
+  h1 {
+    font-size: 1.8em;
+  }
+  h2 {
+    font-size: 1.5em;
+  }
+  h3 {
+    font-size: 1.1em;
+  }
+}
+
+/* Navbar */
+@media (max-width: 992px) {
+  header .navbar-nav .nav-link {
+    padding: 8px 10px;
+    font-size: 1rem;
+  }
+}
+
+/* Footer */
+@media (max-width: 768px) {
+  footer h2 {
+    font-size: 1.2em;
+  }
+  footer ul li a {
+    font-size: 1em;
+  }
+}
+
+/* Product Card */
+@media (max-width: 768px) {
+  .product-card {
+    .card-body {
+      a {
+        font-size: 1em;
+      }
+      .price {
+        font-size: 1em;
+      }
+    }
+  }
+}
+
+@media (max-width: 576px) {
+  .product-card {
+    .card-img img {
+      border-radius: 8px;
+    }
+  }
+}
+
+/* Container Responsiveness */
+@media (max-width: 1400px) {
+  .container {
+    max-width: 1200px;
+  }
+}
+
+@media (max-width: 1200px) {
+  .container {
+    max-width: 1000px;
+  }
+}
+
+@media (max-width: 992px) {
+  .container {
+    max-width: 800px;
+  }
+}
+
+@media (max-width: 768px) {
+  .container {
+    max-width: 100%;
+    padding: 0 15px;
   }
 }

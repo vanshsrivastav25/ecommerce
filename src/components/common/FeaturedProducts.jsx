@@ -8,7 +8,7 @@ const FeaturedProducts = () => {
         <div className="container">
           <h2>Featured Products</h2>
           <div className="row mt-4">
-            <div className="col-md-3">
+            <div className="col-md-3 col-6">
               <div className="product-card border-0">
                 <div className="card-img">
                   <img src={eleven} alt="" className="w-10" />
@@ -24,7 +24,7 @@ const FeaturedProducts = () => {
               </div>
             </div>
 
-            <div className="col-md-3">
+            <div className="col-md-3 col-6">
               <div className="product-card border-0">
                 <div className="card-img">
                   <img src={eleven} alt="" className="w-10" />

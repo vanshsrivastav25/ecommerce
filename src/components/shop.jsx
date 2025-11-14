@@ -1,11 +1,186 @@
-import React from 'react'
+import React from "react";
+import Layout from "./common/Layout";
+import eight from "../assets/images/eight.jpg";
 
 const shop = () => {
   return (
-    <div>
-      Shop Page
-    </div>
-  )
-}
+    <Layout>
+      <div className="container">
+        <nav aria-label="breadcrumb" className="py-4">
+          <ol class="breadcrumb">
+            <li class="breadcrumb-item">
+              <a href="#">Home</a>
+            </li>
+            <li class="breadcrumb-item active" aria-current="page">
+              Shop
+            </li>
+          </ol>
+        </nav>
 
-export default shop
+        <div className="row">
+          <div className="col-md-3">
+            <div className="card shadow order-0 mb-3">
+              <div className="card-body p-4">
+                <h3 className="mb-3">Categories</h3>
+                <ul>
+                  <li className="mb-2">
+                    <input type="checkbox" />
+                    <label htmlFor="" className="ps-2">
+                      Kids
+                    </label>
+                  </li>
+                  <li className="mb-2">
+                    <input type="checkbox" />
+                    <label htmlFor="" className="ps-2">
+                      Mens
+                    </label>
+                  </li>
+                  <li className="mb-2">
+                    <input type="checkbox" />
+                    <label htmlFor="" className="ps-2">
+                      Womens
+                    </label>
+                  </li>
+                </ul>
+              </div>
+            </div>
+
+            <div className="card shadow order-0 mb-3">
+              <div className="card-body p-4">
+                <h3 className="mb-3">Brands</h3>
+                <ul>
+                  <li className="mb-2">
+                    <input type="checkbox" />
+                    <label htmlFor="" className="ps-2">
+                      Puma
+                    </label>
+                  </li>
+                  <li className="mb-2">
+                    <input type="checkbox" />
+                    <label htmlFor="" className="ps-2">
+                      Killer
+                    </label>
+                  </li>
+                  <li className="mb-2">
+                    <input type="checkbox" />
+                    <label htmlFor="" className="ps-2">
+                      Levis
+                    </label>
+                  </li>
+                  <li className="mb-2">
+                    <input type="checkbox" />
+                    <label htmlFor="" className="ps-2">
+                      Levis
+                    </label>
+                  </li>
+                </ul>
+              </div>
+            </div>
+          </div>
+
+          <div className="col-md-9">
+            <div className="row pb-5">
+              <div className="col-md-4 col-6">
+                <div className="product-card border-0">
+                  <div className="card-img">
+                    <img src={eight} alt="" className="w-10" />
+                  </div>
+
+                  <div className="card-body pt-3">
+                    <a href="">Red Check Shirt for Mens</a>
+                    <div className="price">
+                      $50{" "}
+                      <span className="text-decoration-linr-through">$80</span>
+                    </div>
+                  </div>
+                </div>
+              </div>
+
+              <div className="col-md-4 col-6">
+                <div className="product-card border-0">
+                  <div className="card-img">
+                    <img src={eight} alt="" className="w-10" />
+                  </div>
+
+                  <div className="card-body pt-3">
+                    <a href="">Red Check Shirt for Mens</a>
+                    <div className="price">
+                      $50{" "}
+                      <span className="text-decoration-linr-through">$80</span>
+                    </div>
+                  </div>
+                </div>
+              </div>
+
+              <div className="col-md-4 col-6">
+                <div className="product-card border-0">
+                  <div className="card-img">
+                    <img src={eight} alt="" className="w-10" />
+                  </div>
+
+                  <div className="card-body pt-3">
+                    <a href="">Red Check Shirt for Mens</a>
+                    <div className="price">
+                      $50{" "}
+                      <span className="text-decoration-linr-through">$80</span>
+                    </div>
+                  </div>
+                </div>
+              </div>
+
+              <div className="col-md-4 col-6">
+                <div className="product-card border-0">
+                  <div className="card-img">
+                    <img src={eight} alt="" className="w-10" />
+                  </div>
+
+                  <div className="card-body pt-3">
+                    <a href="">Red Check Shirt for Mens</a>
+                    <div className="price">
+                      $50{" "}
+                      <span className="text-decoration-linr-through">$80</span>
+                    </div>
+                  </div>
+                </div>
+              </div>
+
+              <div className="col-md-4 col-6">
+                <div className="product-card border-0">
+                  <div className="card-img">
+                    <img src={eight} alt="" className="w-10" />
+                  </div>
+
+                  <div className="card-body pt-3">
+                    <a href="">Red Check Shirt for Mens</a>
+                    <div className="price">
+                      $50{" "}
+                      <span className="text-decoration-linr-through">$80</span>
+                    </div>
+                  </div>
+                </div>
+              </div>
+
+              <div className="col-md-4 col-6">
+                <div className="product-card border-0">
+                  <div className="card-img">
+                    <img src={eight} alt="" className="w-10" />
+                  </div>
+
+                  <div className="card-body pt-3">
+                    <a href="">Red Check Shirt for Mens</a>
+                    <div className="price">
+                      $50{" "}
+                      <span className="text-decoration-linr-through">$80</span>
+                    </div>
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </Layout>
+  );
+};
+
+export default shop;
