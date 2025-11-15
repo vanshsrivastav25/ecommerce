@@ -8,24 +8,27 @@ const Cart = () => {
     <Layout>
       <div className="container pb-4">
         <div className="row">
+          {/* Breadcrumb */}
           <div className="col-md-12">
             <nav aria-label="breadcrumb" className="py-4">
-              <ol class="breadcrumb">
-                <li class="breadcrumb-item">
+              <ol className="breadcrumb">
+                <li className="breadcrumb-item">
                   <Link to="/">Home</Link>
                 </li>
-                <li class="breadcrumb-item active" aria-current="page">
+                <li className="breadcrumb-item active" aria-current="page">
                   Cart
                 </li>
               </ol>
             </nav>
           </div>
 
+          {/* Cart Table */}
           <div className="col-md-12">
             <h2 className="border-bottom pb-3">Cart</h2>
 
             <table className="table align-middle">
               <tbody>
+                {/* Row Item */}
                 <tr>
                   <td width="100">
                     <img src={ProductImg} width={80} alt="" />
@@ -39,7 +42,6 @@ const Cart = () => {
                     </div>
                   </td>
 
-                  {/* Center Input */}
                   <td style={{ width: "200px" }} className="text-center">
                     <input
                       style={{ width: "100px" }}
@@ -49,7 +51,6 @@ const Cart = () => {
                     />
                   </td>
 
-                  {/* Right corner delete icon */}
                   <td className="text-end">
                     <svg
                       xmlns="http://www.w3.org/2000/svg"
@@ -64,6 +65,7 @@ const Cart = () => {
                   </td>
                 </tr>
 
+                {/* Duplicate Row */}
                 <tr>
                   <td width="100">
                     <img src={ProductImg} width={80} alt="" />
@@ -77,7 +79,6 @@ const Cart = () => {
                     </div>
                   </td>
 
-                  {/* Center Input */}
                   <td style={{ width: "200px" }} className="text-center">
                     <input
                       style={{ width: "100px" }}
@@ -87,7 +88,6 @@ const Cart = () => {
                     />
                   </td>
 
-                  {/* Right corner delete icon */}
                   <td className="text-end">
                     <svg
                       xmlns="http://www.w3.org/2000/svg"
@@ -106,6 +106,7 @@ const Cart = () => {
           </div>
         </div>
 
+        {/* Cart Summary */}
         <div className="row justify-content-end">
           <div className="col-md-3">
             <div className="d-flex justify-content-between border-bottom pb-2">
@@ -119,9 +120,7 @@ const Cart = () => {
             </div>
 
             <div className="d-flex justify-content-between border-bottom py-2">
-              <div>
-                <strong>Grand Total</strong>
-              </div>
+              <strong>Grand Total</strong>
               <div>$20</div>
             </div>
 
