@@ -5,31 +5,35 @@ import { Link } from "react-router-dom";
 import { adminToken, apiUrl } from "../../common/http";
 import Nostate from "../../common/Nostate";
 import Loader from "../../common/Loader";
-import { toast } from "react-toastify";
+import { toast } from "react-toastify"; // Make sure you have react-toastify installed
 
 const Show = () => {
   const [products, setProducts] = useState([]);
   const [loader, setLoader] = useState(false);
 
+  // Fetch all products
   const fetchProducts = async () => {
     setLoader(true);
     try {
       const res = await fetch(`${apiUrl}/products`, {
         method: "GET",
         headers: {
-          "Content-type": "application/json",
+          "Content-Type": "application/json",
           Accept: "application/json",
           Authorization: `Bearer ${adminToken()}`,
         },
       });
 
       const result = await res.json();
-      // console.log(result);
       setLoader(false);
+
+      console.log("Products API Response:", result);
+      console.log("First Product Data:", result.data && result.data[0]);
+
       if (result.status === 200) {
-        setProducts(result.data);
+        setProducts(result.data || []); // fallback to empty array
       } else {
-        console.log("Something went wrong", result);
+        console.error("Something went wrong", result);
       }
     } catch (error) {
       console.error("Error fetching products:", error);
@@ -37,9 +41,11 @@ const Show = () => {
     }
   };
 
+  // Delete a product
   const deleteProduct = async (id) => {
-      if (!window.confirm("Are you sure?")) return;
-  
+    if (!window.confirm("Are you sure?")) return;
+
+    try {
       const res = await fetch(`${apiUrl}/products/${id}`, {
         method: "DELETE",
         headers: {
@@ -47,18 +53,20 @@ const Show = () => {
           Authorization: `Bearer ${adminToken()}`,
         },
       });
-  
+
       const result = await res.json();
-  
+
       if (result.status === 200) {
+        setProducts(products.filter((product) => product.id !== id));
         toast.success(result.message);
-        const newProducts = products.filter(product => product.id != id)
-        setProducts(newProducts)
-        toast.success(result.message)
       } else {
         toast.error(result.message || "Something went wrong");
       }
-    };
+    } catch (error) {
+      console.error("Error deleting product:", error);
+      toast.error("Something went wrong while deleting the product");
+    }
+  };
 
   useEffect(() => {
     fetchProducts();
@@ -69,24 +77,26 @@ const Show = () => {
       <div className="container">
         <div className="row">
           <div className="d-flex justify-content-between mt-5 pb-3">
-            <div className="h4 h4 pb-0 mb-0">Products</div>
+            <div className="h4 pb-0 mb-0">Products</div>
             <Link to="/admin/products/create" className="btn btn-primary">
               Create
             </Link>
           </div>
+
           <div className="col-md-3">
             <Sidebar />
           </div>
+
           <div className="col-md-9">
             <div className="card shadow">
               <div className="card-body p-4">
-                {loader === true && <Loader />}
+                {loader && <Loader />}
 
-                {loader === false && products.length === 0 && (
+                {!loader && products.length === 0 && (
                   <Nostate text="Products not found" />
                 )}
 
-                {products && products.length > 0 && (
+                {products.length > 0 && (
                   <table className="table table-hover">
                     <thead>
                       <tr>
@@ -107,12 +117,11 @@ const Show = () => {
                           <td>
                             <img
                               src={
-                                product.image_url && product.image_url !== ""
-                                  ? product.image_url
-                                  : "https://placehold.co/50x50"
+                                product.image_url ||
+                                "https://placehold.co/50x50"
                               }
                               width={60}
-                              alt={product.name || "Product Image"}
+                              alt={product.title || "Product Image"}
                             />
                           </td>
                           <td>{product.title}</td>
@@ -120,7 +129,7 @@ const Show = () => {
                           <td>{product.qty}</td>
                           <td>{product.sku}</td>
                           <td>
-                            {product.status == 1 ? (
+                            {product.status === 1 ? (
                               <span className="badge text-bg-success">
                                 Active
                               </span>

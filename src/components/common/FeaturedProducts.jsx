@@ -1,13 +1,22 @@
-import React from "react";
-import eleven from "../../assets/images/eleven.jpg";
+import React, { useEffect, useState } from "react";
+import { apiUrl } from "./http";
 
 const FeaturedProducts = () => {
-  const products = [
-    { id: 1, title: "Red Check Shirt for Mens", price: 50, oldPrice: 80 },
-    { id: 2, title: "Red Check Shirt for Mens", price: 50, oldPrice: 80 },
-    { id: 3, title: "Red Check Shirt for Mens", price: 50, oldPrice: 80 },
-    { id: 4, title: "Red Check Shirt for Mens", price: 50, oldPrice: 80 },
-  ];
+  const [products, setProducts] = useState([]);
+
+  const featuredProducts = async () => {
+    try {
+      const res = await fetch(apiUrl + "/get-featured-products");
+      const result = await res.json();
+      setProducts(result.data || []);
+    } catch (error) {
+      console.log("Error fetching latest products:", error);
+    }
+  };
+
+  useEffect(() => {
+    featuredProducts();
+  }, []);
 
   return (
     <section className="section-2 py-5">
@@ -19,7 +28,7 @@ const FeaturedProducts = () => {
             <div key={item.id} className="col-md-3 col-6">
               <div className="product-card border-0">
                 <div className="card-img">
-                  <img src={eleven} alt={item.title} className="w-10" />
+                  <img src={item.image_url} alt={item.title} className="w-10" />
                 </div>
 
                 <div className="card-body pt-3">
@@ -35,7 +44,6 @@ const FeaturedProducts = () => {
             </div>
           ))}
         </div>
-
       </div>
     </section>
   );

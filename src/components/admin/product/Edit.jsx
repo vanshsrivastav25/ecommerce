@@ -17,6 +17,9 @@ const Edit = ({ placeholder }) => {
   const [sizes, setSizes] = useState([]);
   const [sizesChecked, setSizesChecked] = useState([]);
   const [productImages, setProductImages] = useState([]);
+  const [gallery, setGallery] = useState([]);
+  const [galleryImages, setGalleryImages] = useState([]);
+
   const [product, setProduct] = useState(null);
 
   const navigate = useNavigate();
@@ -66,6 +69,8 @@ const Edit = ({ placeholder }) => {
             status: result.data.status,
             is_featured: result.data.is_featured,
           });
+          // console.log(result)
+          // setCategories(result.data);
         });
     },
   });
@@ -152,7 +157,7 @@ const Edit = ({ placeholder }) => {
     })
       .then((res) => res.json())
       .then((result) => {
-        console.log(result);
+        // console.log(result);
         setSizes(result.data);
       });
   };

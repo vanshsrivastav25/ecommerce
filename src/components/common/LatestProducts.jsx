@@ -1,13 +1,22 @@
-import React from "react";
-import eight from "../../assets/images/eight.jpg";
+import React, { useEffect, useState } from "react";
+import { apiUrl } from "../common/http";
 
 const LatestProducts = () => {
-  const products = [
-    { id: 1, title: "Red Check Shirt for Mens", price: 50, oldPrice: 80 },
-    { id: 2, title: "Red Check Shirt for Mens", price: 50, oldPrice: 80 },
-    { id: 3, title: "Red Check Shirt for Mens", price: 50, oldPrice: 80 },
-    { id: 4, title: "Red Check Shirt for Mens", price: 50, oldPrice: 80 },
-  ];
+  const [products, setProducts] = useState([]);
+
+  const latestProducts = async () => {
+    try {
+      const res = await fetch(apiUrl + "/get-latest-products");
+      const result = await res.json();
+      setProducts(result.data || []);
+    } catch (error) {
+      console.log("Error fetching latest products:", error);
+    }
+  };
+
+  useEffect(() => {
+    latestProducts();
+  }, []);
 
   return (
     <section className="section-2 py-5">
@@ -19,16 +28,24 @@ const LatestProducts = () => {
             <div key={item.id} className="col-md-3 col-6">
               <div className="product-card border-0">
                 <div className="card-img">
-                  <img src={eight} alt={item.title} className="w-10" />
+                  <img
+                    src={item.image_url}
+                    alt={item.title}
+                    className="w-100"
+                    style={{ height: "200px", objectFit: "cover" }}
+                  />
                 </div>
 
                 <div className="card-body pt-3">
                   <a href="#">{item.title}</a>
+
                   <div className="price">
-                    ${item.price}{" "}
-                    <span className="text-decoration-line-through">
-                      ${item.oldPrice}
-                    </span>
+                    ₹{item.price}{" "}
+                    {item.compare_price && (
+                      <span className="text-decoration-line-through">
+                        ₹{item.compare_price}
+                      </span>
+                    )}
                   </div>
                 </div>
               </div>
