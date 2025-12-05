@@ -32,8 +32,8 @@ const FeaturedProducts = () => {
                 </div>
 
                 <div className="card-body pt-3">
-                  <a href="#">{item.title}</a>
-                  <div className="price">
+                  <a href="">{item.title}</a>
+                  <div className="price"> 
                     ${item.price}{" "}
                     <span className="text-decoration-line-through">
                       ${item.oldPrice}
