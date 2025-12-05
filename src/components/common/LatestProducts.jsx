@@ -1,5 +1,6 @@
 import React, { useEffect, useState } from "react";
 import { apiUrl } from "../common/http";
+import { Link } from "react-router-dom";
 
 const LatestProducts = () => {
   const [products, setProducts] = useState([]);
@@ -24,26 +25,28 @@ const LatestProducts = () => {
         <h2>New Arrivals</h2>
 
         <div className="row mt-4">
-          {products.map((item) => (
-            <div key={item.id} className="col-md-3 col-6">
+          {products.map((product) => (
+            <div key={product.id} className="col-md-3 col-6">
               <div className="product-card border-0">
                 <div className="card-img">
-                  <img
-                    src={item.image_url}
-                    alt={item.title}
-                    className="w-100"
-                    style={{ height: "200px", objectFit: "cover" }}
-                  />
+                  <Link to={`/product/${product.id}`}>
+                    <img
+                      src={product.image_url}
+                      alt={product.title}
+                      className="w-100"
+                      style={{ height: "200px", objectFit: "cover" }}
+                    />
+                  </Link>
                 </div>
 
                 <div className="card-body pt-3">
-                  <a href="#">{item.title}</a>
+                  <Link to={`/product/${product.id}`}>{product.title}</Link>
 
                   <div className="price">
-                    ₹{item.price}{" "}
-                    {item.compare_price && (
+                    ₹{product.price}{" "}
+                    {product.compare_price && (
                       <span className="text-decoration-line-through">
-                        ₹{item.compare_price}
+                        ₹{product.compare_price}
                       </span>
                     )}
                   </div>
@@ -52,7 +55,6 @@ const LatestProducts = () => {
             </div>
           ))}
         </div>
-
       </div>
     </section>
   );

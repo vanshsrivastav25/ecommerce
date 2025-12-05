@@ -1,5 +1,6 @@
 import React, { useEffect, useState } from "react";
 import { apiUrl } from "./http";
+import { Link } from "react-router-dom";
 
 const FeaturedProducts = () => {
   const [products, setProducts] = useState([]);
@@ -24,20 +25,28 @@ const FeaturedProducts = () => {
         <h2>Featured Products</h2>
 
         <div className="row mt-4">
-          {products.map((item) => (
-            <div key={item.id} className="col-md-3 col-6">
+          {products.map((product) => (
+            <div key={product.id} className="col-md-3 col-6">
               <div className="product-card border-0">
                 <div className="card-img">
-                  <img src={item.image_url} alt={item.title} className="w-10" />
+                  <Link to={`/product/${product.id}`}>
+                    <img
+                      src={product.image_url}
+                      alt={product.title}
+                      className="w-10"
+                    />
+                  </Link>
                 </div>
 
                 <div className="card-body pt-3">
-                  <a href="">{item.title}</a>
-                  <div className="price"> 
-                    ${item.price}{" "}
-                    <span className="text-decoration-line-through">
-                      ${item.oldPrice}
-                    </span>
+                  <Link to={`/product/${product.id}`}>{product.title}</Link>
+                  <div className="price">
+                    ${product.price} &nbsp;
+                    {product.compare_price && (
+                      <span className="text-decoration-line-through">
+                        ${product.compare_price}
+                      </span>
+                    )}
                   </div>
                 </div>
               </div>
