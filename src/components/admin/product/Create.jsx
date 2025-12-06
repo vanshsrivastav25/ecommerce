@@ -41,6 +41,7 @@ const Create = ({ placeholder }) => {
       ...data,
       description: content,
       gallery: gallery,
+      sizes: sizesChecked,
     };
 
     console.log("FORM DATA SENDING:", formData);
@@ -109,6 +110,7 @@ const Create = ({ placeholder }) => {
   };
 
   const fetchSizes = async () => {
+    console.log("SIZES API RESPONSE:", result);
     const res = await fetch(`${apiUrl}/sizes`, {
       method: "GET",
       headers: {
@@ -169,19 +171,23 @@ const Create = ({ placeholder }) => {
         <div className="row">
           <div className="d-flex justify-content-between mt-5 pb-3">
             <div className="h4 h4 pb-0 mb-0">Product / Create</div>
+
             <Link to="/admin/products" className="btn btn-primary">
               Back
             </Link>
           </div>
+
           <div className="col-md-3">
             <Sidebar />
           </div>
+
           <div className="col-md-9">
             <form onSubmit={handleSubmit(saveProduct)}>
               <div className="card shadow">
                 <div className="card-body p-4">
                   <div className="mb-3">
                     <label htmlFor="" className="form-label">
+                      {" "}
                       Title *
                     </label>
                     <input
