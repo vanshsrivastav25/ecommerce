@@ -1,13 +1,11 @@
-import React, { useContext } from "react";
-import Layout from "../common/Layout";
+import React from "react";
+import Layout from "./common/Layout";
 import { useForm } from "react-hook-form";
-import { apiUrl } from "../common/http";
+import { Link, useNavigate } from "react-router-dom";
 import { toast } from "react-toastify";
-import { useNavigate } from "react-router-dom";
-import { AdminAuthContext } from "../context/AdminAuth";
+import { apiUrl } from "./common/http";
 
-const Login = () => {
-  const {login} = useContext(AdminAuthContext);
+const Register = () => {
   const {
     register,
     handleSubmit,
@@ -18,14 +16,14 @@ const Login = () => {
 
   const onSubmit = async (data) => {
     try {
-      const response = await fetch(`${apiUrl}/admin/login`, {
+      const response = await fetch(`${apiUrl}/register`, {
         method: "POST",
         headers: {
-          "Content-Type": "application/json"
+          "Content-Type": "application/json",
         },
-        body: JSON.stringify(data)
-      })
-      
+        body: JSON.stringify(data),
+      });
+
       // Check response status before parsing
       if (!response.ok) {
         toast.error("Something went wrong — Status " + response.status);
@@ -36,22 +34,11 @@ const Login = () => {
       console.log(result);
 
       if (result.status === 200) {
-        const adminInfo =  {
-          token: result.token,
-          id: result.id,
-          name: result.name
-        }
-
-        localStorage.setItem('adminInfo', JSON.stringify(adminInfo))
-
-        login(adminInfo)
-
-        navigate('/admin/Dashboard')
-
+        toast.success(result.message)
+        navigate("/account/login");
       } else {
         toast.error(result.message || "Invalid email or password");
       }
-
     } catch (error) {
       console.error(error);
       toast.error("Server Error, Please try again later");
@@ -62,9 +49,25 @@ const Login = () => {
     <Layout>
       <div className="container d-flex justify-content-center py-5">
         <form onSubmit={handleSubmit(onSubmit)}>
-          <div className="card shadow border-0 login">
+          <div className="card shadow border-0 register">
             <div className="card-body p-4">
-              <h3>Admin Login</h3>
+              <h3 className="border-bottom pb-2 mb-3">Register</h3>
+
+                {/* Name */}
+              <div className="mb-3">
+                <label className="form-label">Name</label>
+                <input
+                  {...register("name", {
+                    required: "The name field is required",
+                  })}
+                  type="text"
+                  className={`form-control ${errors.email ? "is-invalid" : ""}`}
+                  placeholder="Name"
+                />
+                {errors.name && (
+                  <p className="invalid-feedback">{errors.name?.message}</p>
+                )}
+              </div>
 
               {/* Email */}
               <div className="mb-3">
@@ -90,7 +93,9 @@ const Login = () => {
               <div className="mb-3">
                 <label className="form-label">Password</label>
                 <input
-                  {...register("password", { required: "The password field is required." })}
+                  {...register("password", {
+                    required: "The password field is required.",
+                  })}
                   type="password"
                   className={`form-control ${
                     errors.password ? "is-invalid" : ""
@@ -102,13 +107,17 @@ const Login = () => {
                 )}
               </div>
 
-              <button className="btn btn-secondary w-100">Login</button>
+              <button className="btn btn-secondary w-100">Register</button>
+
+              <div className="d-flex justify-content-center pt-4 pb-2">
+                Already have a account? &nbsp; <Link to="/account/login">Login</Link>
+              </div>
             </div>
           </div>
         </form>
       </div>
     </Layout>
-  );  
+  );
 };
 
-export default Login;
+export default Register;
