@@ -6,6 +6,11 @@ export const adminToken = () => {
   return data.token;
 }
 
+export const userToken = () => {
+  const data = JSON.parse(localStorage.getItem('userInfo'))
+  return data.token;
+}
+
 // CSRF token function
 export const getCsrfToken = async () => {
   try {
