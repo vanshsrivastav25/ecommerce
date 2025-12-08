@@ -1,4 +1,6 @@
-import { createContext, useState } from "react";
+import { createContext, useEffect, useState } from "react";
+import { apiUrl, userToken } from "../common/http";
+import { toast } from "react-toastify";
 
 export const CartContext = createContext();
 
@@ -6,9 +8,9 @@ export const CartProvider = ({ children }) => {
   const [cartData, setCartData] = useState(
     JSON.parse(localStorage.getItem("cart")) || []
   );
+  const [shippingCost, setShippingCost] = useState(0);
 
   const addToCart = (product, size = null) => {
-    
     let updatedCart = [...cartData];
 
     // If cart is empty
@@ -79,7 +81,13 @@ export const CartProvider = ({ children }) => {
   };
 
   const shipping = () => {
-    return 0;
+    shippingCost;
+    let shippingAmount = 0;
+    cartData.map((item) => {
+      shippingAmount += item.qty * shippingCost;
+    });
+
+    return shippingAmount;
   };
 
   const subTotal = () => {
@@ -107,21 +115,50 @@ export const CartProvider = ({ children }) => {
   const deleteCartItem = (itemId) => {
     const newCartData = cartData.filter((item) => item.id != itemId);
     setCartData(newCartData);
-    localStorage.setItem('cart', JSON.stringify(newCartData));
+    localStorage.setItem("cart", JSON.stringify(newCartData));
   };
 
   const getQty = () => {
     let qty = 0;
-    cartData.map(item => {
-        qty += parseInt(item.qty)
-    })
+    cartData.map((item) => {
+      qty += parseInt(item.qty);
+    });
     return qty;
-  }
+  };
 
   const clearCart = () => {
-  setCartData([]);
-  localStorage.removeItem("cart");
-};
+    setCartData([]);
+    localStorage.removeItem("cart");
+  };
+
+  useEffect(() => {
+    const fetchShipping = async () => {
+      try {
+        const res = await fetch(`${apiUrl}/get-shipping-front`, {
+          method: "GET",
+          headers: {
+            "Content-type": "application/json",
+            Accept: "application/json",
+            Authorization: `Bearer ${userToken()}`,
+          },
+        });
+
+        const result = await res.json();
+
+        if (result.status === 200 && result.data) {
+          setShippingCost(result.data.shipping_charge);
+        } else {
+          setShippingCost(0);
+          console.log("Something went wrong.", result);
+        }
+      } catch (error) {
+        console.error("Network error:", error);
+        toast.error("Network error occurred");
+      }
+    };
+
+    fetchShipping();
+  }, []);
 
   return (
     <CartContext.Provider
@@ -134,7 +171,7 @@ export const CartProvider = ({ children }) => {
         updateCartItem,
         deleteCartItem,
         getQty,
-        clearCart
+        clearCart,
       }}
     >
       {children}
