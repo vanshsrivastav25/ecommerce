@@ -7,8 +7,9 @@ import { apiUrl, userToken } from "./common/http";
 import { toast } from "react-toastify";
 
 const Checkout = () => {
+ 
   const [paymentMethod, setPaymentMethod] = useState("cod");
-  const { cartData, subTotal, shipping, grandTotal } = useContext(CartContext);
+  const { cartData, subTotal, shipping, grandTotal, clearCart } = useContext(CartContext);
   const navigate = useNavigate();
 
   const handlePaymentMethod = (e) => {
@@ -18,13 +19,36 @@ const Checkout = () => {
   const {
     register,
     handleSubmit,
+    reset,
     watch,
     setError,
     formState: { errors },
-  } = useForm();
+  } = useForm({
+    defaultValues: async () => {
+      fetch(`${apiUrl}/get-profile-details`, {
+        method: "GET",
+        headers: {
+          "Content-type": "application/json",
+          Accept: "application/json",
+          Authorization: `Bearer ${userToken()}`,
+        },
+      })
+        .then((res) => res.json())
+        .then((result) => {
+          reset({
+            name: result.data.name || "",
+            email: result.data.email || "",
+            address: result.data.address || "",
+            mobile: result.data.mobile || "",
+            city: result.data.city || "",
+            zip: result.data.zip || "",
+            state: result.data.state || "",
+          });
+        });
+    },
+  });
 
   const processOrder = (data) => {
-    console.log(data);
     if (paymentMethod == "cod") {
       saveOrder(data, "not paid");
     }
@@ -53,7 +77,8 @@ const Checkout = () => {
       .then((res) => res.json())
       .then((result) => {
         if (result.status == 200) {
-          localStorage.removeItem('cart');
+          // localStorage.removeItem("cart");
+          clearCart();
           navigate(`/order/confirmation/${result.id}`);
         } else {
           toast.error(result.message);

@@ -118,6 +118,11 @@ export const CartProvider = ({ children }) => {
     return qty;
   }
 
+  const clearCart = () => {
+  setCartData([]);
+  localStorage.removeItem("cart");
+};
+
   return (
     <CartContext.Provider
       value={{
@@ -128,7 +133,8 @@ export const CartProvider = ({ children }) => {
         grandTotal,
         updateCartItem,
         deleteCartItem,
-        getQty
+        getQty,
+        clearCart
       }}
     >
       {children}
