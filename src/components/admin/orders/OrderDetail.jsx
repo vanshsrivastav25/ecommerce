@@ -4,12 +4,21 @@ import Sidebar from "../../common/Sidebar";
 import { Link, useParams } from "react-router-dom";
 import { adminToken, apiUrl } from "../../common/http";
 import Loader from "../../common/Loader";
+import { useForm } from "react-hook-form";
+import { toast } from "react-toastify";
 
 const OrderDetail = () => {
   const [order, setOrder] = useState([]);
   const [items, setItems] = useState([]);
   const [loader, setLoader] = useState(false);
   const params = useParams();
+
+  const {
+    register,
+    reset,
+    handleSubmit,
+    formState: { errors },
+  } = useForm();
 
   const fetchOrder = async () => {
     setLoader(true);
@@ -25,10 +34,44 @@ const OrderDetail = () => {
 
       const result = await res.json();
       setLoader(false);
-      console.log(result);
       if (result.status === 200) {
         setOrder(result.data);
         setItems(result.data.items);
+        reset({
+          status: result.data.status,
+          payment_status: result.data.payment_status,
+        });
+      } else {
+        console.log("Something went wrong", result);
+      }
+    } catch (error) {
+      console.error("Error fetching categories:", error);
+      setLoader(false);
+    }
+  };
+
+  const updateOrder = async (data) => {
+    setLoader(true);
+    try {
+      const res = await fetch(`${apiUrl}/update-order/${params.id}`, {
+        method: "POST",
+        headers: {
+          "Content-type": "application/json",
+          Accept: "application/json",
+          Authorization: `Bearer ${adminToken()}`,
+        },
+        body: JSON.stringify(data),
+      });
+
+      const result = await res.json();
+      setLoader(false);
+      if (result.status === 200) {
+        setOrder(result.data);
+        reset({
+          status: result.data.status,
+          payment_status: result.data.payment_status,
+        });
+        toast.success(result.message);
       } else {
         console.log("Something went wrong", result);
       }
@@ -63,7 +106,7 @@ const OrderDetail = () => {
                   <div className="card-body p-4">
                     {loader === true && <Loader />}
 
-                    { loader === false &&
+                    {loader === false && (
                       <div>
                         <div className="row">
                           <div className="col-md-4">
@@ -115,41 +158,41 @@ const OrderDetail = () => {
                           </div>
                         </div>
 
-                        <div class="row pt-3">
-                          <h3 class="pb-2 ">
+                        <div className="row pt-3">
+                          <h3 className="pb-2 ">
                             <strong>Items</strong>
                           </h3>
                           {items.map((item) => {
                             return (
                               <div
                                 key={`${item.id}`}
-                                class="row justify-content-end"
+                                className="row justify-content-end"
                               >
-                                <div class="col-lg-12">
-                                  <div class="d-flex justify-content-between border-bottom pb-2 mb-2">
-                                    <div class="d-flex">
+                                <div className="col-lg-12">
+                                  <div className="d-flex justify-content-between border-bottom pb-2 mb-2">
+                                    <div className="d-flex">
                                       {item.product.image && (
                                         <img
                                           width="70"
-                                          class="me-3"
+                                          className="me-3"
                                           src={`${item.product.image_url}`}
                                           alt=""
                                         />
                                       )}
-                                      <div class="d-flex flex-column">
-                                        <div class="mb-2">
+                                      <div className="d-flex flex-column">
+                                        <div className="mb-2">
                                           <span>{item.name}</span>
                                         </div>
                                         <div>
-                                          <button class="btn btn-size">
+                                          <button className="btn btn-size">
                                             {item.size}
                                           </button>
                                         </div>
                                       </div>
                                     </div>
-                                    <div class="d-flex">
+                                    <div className="d-flex">
                                       <div>X {item.qty}</div>
-                                      <div class="ps-3">${item.price}</div>
+                                      <div className="ps-3">${item.price}</div>
                                     </div>
                                   </div>
                                 </div>
@@ -157,17 +200,17 @@ const OrderDetail = () => {
                             );
                           })}
 
-                          <div class="row justify-content-end">
-                            <div class="col-lg-12">
-                              <div class="d-flex  justify-content-between border-bottom pb-2 mb-2">
+                          <div className="row justify-content-end">
+                            <div className="col-lg-12">
+                              <div className="d-flex  justify-content-between border-bottom pb-2 mb-2">
                                 <div>Subtotal</div>
                                 <div>${order.subtotal}</div>
                               </div>
-                              <div class="d-flex  justify-content-between border-bottom pb-2 mb-2">
+                              <div className="d-flex  justify-content-between border-bottom pb-2 mb-2">
                                 <div>Shipping</div>
                                 <div>${order.shipping}</div>
                               </div>
-                              <div class="d-flex  justify-content-between border-bottom pb-2 mb-2">
+                              <div className="d-flex  justify-content-between border-bottom pb-2 mb-2">
                                 <div>
                                   <strong>Grand Total</strong>
                                 </div>
@@ -177,14 +220,48 @@ const OrderDetail = () => {
                           </div>
                         </div>
                       </div>
-                    }
+                    )}
                   </div>
                 </div>
               </div>
 
               <div className="col-md-3">
                 <div className="card shadow">
-                  <div className="card-body p-4"></div>
+                  <div className="card-body p-4">
+                    <form onSubmit={handleSubmit(updateOrder)}>
+                      <div className="mb-3">
+                        <label className="form-label" htmlFor="status">
+                          Status
+                        </label>
+                        <select
+                          {...register("status", { required: true })}
+                          id="status"
+                          className="form-select"
+                        >
+                          <option value="pending">Pending</option>
+                          <option value="shipped">Shipped</option>
+                          <option value="delivered">Delivered</option>
+                          <option value="cancelled">Cancelled</option>
+                        </select>
+                      </div>
+                      <div className="mb-3">
+                        <label className="form-label" htmlFor="payment-status">
+                          Payment Status
+                        </label>
+                        <select
+                          {...register("payment_status", { required: true })}
+                          id="payment-status"
+                          className="form-select"
+                        >
+                          <option value="paid">Paid</option>
+                          <option value="not paid">Not Paid</option>
+                        </select>
+                      </div>
+                      <button type="submit" className="btn btn-primary">
+                        Update
+                      </button>
+                    </form>
+                  </div>
                 </div>
               </div>
             </div>
