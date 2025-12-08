@@ -22,3 +22,5 @@ export const getCsrfToken = async () => {
     console.error('CSRF token error:', error);
   }
 };
+
+export const STRIPE_PUBLIC_KEY='pk_test_51SMoV511VNpQVwgK7WRszxX1sGGUhB9wTaLqPdKDC13wRHt7OGco0Yi9ic8MsUXQGEi64EyWqjDslWzAeZmeAYBQ00tlJMCQd2'
